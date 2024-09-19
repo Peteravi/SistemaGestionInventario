@@ -106,6 +106,80 @@ namespace Sistemadegestiondeinventario
             }
         }
 
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            // Obtén los valores de los controles
+            string nameFilter = txtName.Text.Trim();
+            string selectedCategoria = cmbCategoria.SelectedItem?.ToString().Trim() ?? "";
+            string selectedProveedor = cmbProveedor.SelectedItem?.ToString().Trim() ?? "";
+
+            // Imprime los valores de entrada para depuración
+            Console.WriteLine($"Filtro Nombre: '{nameFilter}'");
+            Console.WriteLine($"Filtro Categoría: '{selectedCategoria}'");
+            Console.WriteLine($"Filtro Proveedor: '{selectedProveedor}'");
+
+            // Construye la consulta SQL con parámetros
+            string query = "SELECT p.ProductoID, p.Nombre, p.Cantidad, p.Precio, c.Nombre AS Categoria, pr.Nombre AS Proveedor " +
+                           "FROM Productos p " +
+                           "LEFT JOIN Categorias c ON p.CategoriaID = c.CategoriaID " +
+                           "LEFT JOIN Proveedores pr ON p.ProveedorID = pr.ProveedorID " +
+                           "WHERE 1=1";
+
+            List<MySqlParameter> parameters = new List<MySqlParameter>();
+
+            if (!string.IsNullOrEmpty(nameFilter))
+            {
+                query += " AND p.Nombre LIKE @nameFilter";
+                parameters.Add(new MySqlParameter("@nameFilter", $"%{nameFilter}%"));
+            }
+
+            if (!string.IsNullOrEmpty(selectedCategoria))
+            {
+                query += " AND c.Nombre = @categoriaFilter";
+                parameters.Add(new MySqlParameter("@categoriaFilter", selectedCategoria));
+            }
+
+            if (!string.IsNullOrEmpty(selectedProveedor))
+            {
+                query += " AND pr.Nombre = @proveedorFilter";
+                parameters.Add(new MySqlParameter("@proveedorFilter", selectedProveedor));
+            }
+
+            // Ejecuta la consulta con parámetros
+            DataTable dt = new DataTable();
+            try
+            {
+                OpenConnection();
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddRange(parameters.ToArray());
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    adapter.Fill(dt);
+
+                    // Asigna el DataTable al DataGridView
+                    dataGridView1.DataSource = dt;
+                }
+            }
+            catch (MySqlException sqlEx)
+            {
+                MessageBox.Show($"Error al filtrar los productos (SQL): {sqlEx.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al filtrar los productos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+            // Limpiar los campos
+            txtName.Clear();
+            cmbCategoria.SelectedIndex = -1;
+            cmbProveedor.SelectedIndex = -1;
+        }
+
         // Método para agregar un producto
         private void AddProduct(string name, int quantity, double price, int categoriaId, int proveedorId)
         {
@@ -212,84 +286,6 @@ namespace Sistemadegestiondeinventario
                 CloseConnection();
             }
         }
-
-        private void btnFilter_Click(object sender, EventArgs e)
-        {
-            // Obtén los valores de los controles
-            string nameFilter = txtName.Text.Trim();
-            string quantityFilter = txtQuantity.Text.Trim();
-            string priceFilter = txtPrice.Text.Trim();
-            string categoriaFilter = cmbCategoria.SelectedItem?.ToString() ?? "";
-            string proveedorFilter = cmbProveedor.SelectedItem?.ToString() ?? "";
-
-            // Construye la consulta SQL con parámetros
-            string query = "SELECT p.ProductoID, p.Nombre, p.Cantidad, p.Precio, c.Nombre AS Categoria, pr.Nombre AS Proveedor " +
-                           "FROM Productos p " +
-                           "LEFT JOIN Categorias c ON p.CategoriaID = c.CategoriaID " +
-                           "LEFT JOIN Proveedores pr ON p.ProveedorID = pr.ProveedorID " +
-                           "WHERE 1=1";
-
-            List<MySqlParameter> parameters = new List<MySqlParameter>();
-
-            // Agrega filtros opcionales con parámetros
-            if (!string.IsNullOrEmpty(nameFilter))
-            {
-                query += " AND p.Nombre LIKE @nameFilter";
-                parameters.Add(new MySqlParameter("@nameFilter", $"%{nameFilter}%"));
-            }
-
-            if (!string.IsNullOrEmpty(quantityFilter) && int.TryParse(quantityFilter, out int quantity))
-            {
-                query += " AND p.Cantidad = @quantity";
-                parameters.Add(new MySqlParameter("@quantity", quantity));
-            }
-
-            if (!string.IsNullOrEmpty(priceFilter) && double.TryParse(priceFilter, out double price))
-            {
-                query += " AND p.Precio = @price";
-                parameters.Add(new MySqlParameter("@price", price));
-            }
-
-            if (!string.IsNullOrEmpty(categoriaFilter))
-            {
-                query += " AND c.Nombre = @categoria";
-                parameters.Add(new MySqlParameter("@categoria", categoriaFilter));
-            }
-
-            if (!string.IsNullOrEmpty(proveedorFilter))
-            {
-                query += " AND pr.Nombre = @proveedor";
-                parameters.Add(new MySqlParameter("@proveedor", proveedorFilter));
-            }
-
-            // Ejecuta la consulta con parámetros
-            DataTable dt = new DataTable();
-            try
-            {
-                OpenConnection();
-
-                using (MySqlCommand cmd = new MySqlCommand(query, connection))
-                {
-                    cmd.Parameters.AddRange(parameters.ToArray());
-                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                    adapter.Fill(dt);
-                    dataGridView1.DataSource = dt;
-                }
-            }
-            catch (MySqlException sqlEx)
-            {
-                MessageBox.Show($"Error al filtrar los productos (SQL): {sqlEx.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al filtrar los productos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                CloseConnection();
-            }
-        }
-
 
         // Método para actualizar un producto
         private void UpdateProduct(int id, string name, int quantity, double price, int categoriaId, int proveedorId)
@@ -521,7 +517,6 @@ namespace Sistemadegestiondeinventario
             }
         }
 
-
         private void btnImport_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -534,6 +529,8 @@ namespace Sistemadegestiondeinventario
             {
                 try
                 {
+                    string connectionString = "Server=localhost;Database=InventarioDB;Uid=root;Pwd=piteravi07;";
+
                     // Abrir el archivo Excel seleccionado
                     using (var workbook = new XLWorkbook(openFileDialog.FileName))
                     {
@@ -569,11 +566,11 @@ namespace Sistemadegestiondeinventario
                             if (!string.IsNullOrWhiteSpace(nombre) && cantidad >= 0 && precio >= 0)
                             {
                                 // Asignar IDs de categoría y proveedor según las cadenas proporcionadas
-                                int categoriaId = GetCategoryId(categoria); // Método para obtener ID de la categoría
-                                int proveedorId = GetProviderId(proveedor); // Método para obtener ID del proveedor
+                                int categoriaId = GetCategoryId(categoria, connectionString);
+                                int proveedorId = GetProviderId(proveedor, connectionString);
 
                                 // Insertar los datos en la base de datos
-                                AddProduct(productoId, nombre, cantidad, precio, categoriaId, proveedorId);
+                                AddProduct(productoId, nombre, cantidad, precio, categoriaId, proveedorId, connectionString);
                             }
                             else
                             {
@@ -588,7 +585,7 @@ namespace Sistemadegestiondeinventario
                         if (!hasInvalidData)
                         {
                             MessageBox.Show("Datos importados exitosamente.", "Importación Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            GetProducts(); // Actualizar la vista de productos
+                            GetProducts(connectionString); // Actualizar la vista de productos
                         }
                     }
                 }
@@ -600,12 +597,10 @@ namespace Sistemadegestiondeinventario
         }
 
         // Método para obtener el ID de la categoría
-        private int GetCategoryId(string categoria)
+        private int GetCategoryId(string categoria, string connectionString)
         {
             int categoriaId = -1; // Valor predeterminado para indicar que no se encontró la categoría
-
-            string connectionString = "Server=localhost;Database=InventarioDB;Uid=root;Pwd=piteravi07;";
-            string query = "SELECT CategoriaID FROM categorias WHERE Nombre = @Nombre";
+            string query = "SELECT CategoriaID FROM Categorias WHERE Nombre = @Nombre";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -624,6 +619,7 @@ namespace Sistemadegestiondeinventario
                     else
                     {
                         // Opcional: Agregar categoría si no existe
+                        // Puedes implementar la lógica para agregar la categoría aquí
                     }
                 }
                 catch (Exception ex)
@@ -636,12 +632,10 @@ namespace Sistemadegestiondeinventario
         }
 
         // Método para obtener el ID del proveedor
-        private int GetProviderId(string proveedor)
+        private int GetProviderId(string proveedor, string connectionString)
         {
             int proveedorId = -1; // Valor predeterminado para indicar que no se encontró el proveedor
-
-            string connectionString = "Server=localhost;Database=InventarioDB;Uid=root;Pwd=piteravi07;";
-            string query = "SELECT ProveedorID FROM proveedores WHERE Nombre = @Nombre";
+            string query = "SELECT ProveedorID FROM Proveedores WHERE Nombre = @Nombre";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -660,6 +654,7 @@ namespace Sistemadegestiondeinventario
                     else
                     {
                         // Opcional: Agregar proveedor si no existe
+                        // Puedes implementar la lógica para agregar el proveedor aquí
                     }
                 }
                 catch (Exception ex)
@@ -669,20 +664,12 @@ namespace Sistemadegestiondeinventario
             }
 
             return proveedorId;
-    }
-        private void AddProduct(int productoId, string nombre, int cantidad, double precio, int categoriaId, int proveedorId)
+        }
+
+        // Método para añadir un producto a la base de datos
+        private void AddProduct(int productoId, string nombre, int cantidad, double precio, int categoriaId, int proveedorId, string connectionString)
         {
-            // Obtén la cadena de conexión desde App.config
-            string connectionString = ConfigurationManager.ConnectionStrings["InventarioDBConnectionString"]?.ConnectionString;
-
-            // Verifica si la cadena de conexión es nula o vacía
-            if (string.IsNullOrEmpty(connectionString))
-            {
-                MessageBox.Show("La cadena de conexión no se encontró en App.config.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            string query = "INSERT INTO productos (ProductoID, Nombre, Cantidad, Precio, CategoriaID, ProveedorID) VALUES (@ProductoID, @Nombre, @Cantidad, @Precio, @CategoriaID, @ProveedorID)";
+            string query = "INSERT INTO Productos (ProductoID, Nombre, Cantidad, Precio, CategoriaID, ProveedorID) VALUES (@ProductoID, @Nombre, @Cantidad, @Precio, @CategoriaID, @ProveedorID)";
 
             try
             {
@@ -705,5 +692,15 @@ namespace Sistemadegestiondeinventario
                 MessageBox.Show($"Error al agregar el producto: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        // Método para obtener productos (Asegúrate de que coincida con la firma correcta)
+        private void GetProducts(string connectionString)
+        {
+            // Implementa la lógica para obtener los productos y actualizar la vista aquí
+            // Asegúrate de que el método no reciba un argumento si no está definido para hacerlo
+        } 
+
+
     }
 }
+
