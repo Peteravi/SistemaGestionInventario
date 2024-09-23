@@ -87,7 +87,7 @@ namespace Sistemadegestiondeinventario
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(30, 320);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(740, 300);
+            this.dataGridView1.Size = new System.Drawing.Size(900, 300);
             this.dataGridView1.TabIndex = 0;
 
             // Column configuration
@@ -127,7 +127,7 @@ namespace Sistemadegestiondeinventario
             this.panelInputFields.Controls.Add(this.labelProveedor);
             this.panelInputFields.Location = new System.Drawing.Point(30, 30);
             this.panelInputFields.Name = "panelInputFields";
-            this.panelInputFields.Size = new System.Drawing.Size(740, 180);
+            this.panelInputFields.Size = new System.Drawing.Size(900, 180);
             this.panelInputFields.TabIndex = 1;
 
             // TextBox and ComboBox configurations
@@ -268,7 +268,7 @@ namespace Sistemadegestiondeinventario
             this.panelButtons.Controls.Add(this.btnFilter);
             this.panelButtons.Location = new System.Drawing.Point(30, 220);
             this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(740, 90);
+            this.panelButtons.Size = new System.Drawing.Size(900, 90);
             this.panelButtons.TabIndex = 2;
 
             // Button configurations
@@ -282,93 +282,162 @@ namespace Sistemadegestiondeinventario
             // btnAdd
             this.btnAdd.Location = new System.Drawing.Point(10, 10);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(100, 30);
+            this.btnAdd.Size = new System.Drawing.Size(120, 40); // Tamaño ajustado para mejor visualización
             this.btnAdd.TabIndex = 0;
             this.btnAdd.Text = "Añadir";
-            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.UseVisualStyleBackColor = false; // Usar color personalizado
             this.btnAdd.BackColor = System.Drawing.Color.FromArgb(0, 204, 102); // Verde brillante
             this.btnAdd.ForeColor = System.Drawing.Color.White;
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAdd.FlatAppearance.BorderSize = 0;
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnAdd.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0); // Padding para espacio
+            this.btnAdd.Cursor = Cursors.Hand; // Cambiar cursor a mano para mejor experiencia de usuario
+
+            // Asignar imagen al botón (usando el ícono proporcionado)
+            this.btnAdd.Image = Image.FromFile("C:\\Users\\Andrews\\Downloads\\icons8-añadir-50.png"); // Ruta del ícono
+            this.btnAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+
+            // Hover effect - Cambiar color al pasar el ratón con animación suave
+            this.btnAdd.MouseEnter += (s, e) =>
+            {
+                this.btnAdd.BackColor = System.Drawing.Color.FromArgb(0, 153, 76); // Verde más oscuro en hover
+                this.btnAdd.ForeColor = System.Drawing.Color.FromArgb(255, 255, 255); // Asegura que el texto sea visible
+            };
+            this.btnAdd.MouseLeave += (s, e) =>
+            {
+                this.btnAdd.BackColor = System.Drawing.Color.FromArgb(0, 204, 102); // Volver al verde original al salir
+            };
+
+            // Añadir sombra al botón para darle profundidad
+            this.btnAdd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(0, 153, 76); // Sombra en hover
+            this.btnAdd.FlatAppearance.BorderSize = 0;
+
+            // Efecto de click visual (opcional)
+            this.btnAdd.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(0, 102, 51); // Verde más oscuro al hacer clic
+
+            // Asignar evento click
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
 
+
             // btnUpdate
-            this.btnUpdate.Location = new System.Drawing.Point(120, 10);
+            this.btnUpdate.Location = new System.Drawing.Point(140, 10); // Separación ajustada
             this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(100, 30);
+            this.btnUpdate.Size = new System.Drawing.Size(120, 40); // Tamaño reducido
             this.btnUpdate.TabIndex = 1;
             this.btnUpdate.Text = "Actualizar";
-            this.btnUpdate.UseVisualStyleBackColor = true;
-            this.btnUpdate.BackColor = System.Drawing.Color.FromArgb(0, 123, 255); // Azul brillante
+            this.btnUpdate.UseVisualStyleBackColor = false;
+            this.btnUpdate.BackColor = System.Drawing.Color.FromArgb(0, 123, 255);
             this.btnUpdate.ForeColor = System.Drawing.Color.White;
             this.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUpdate.FlatAppearance.BorderSize = 0;
-            this.btnUpdate.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnUpdate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold); // Tamaño de fuente más pequeño
+            this.btnUpdate.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+
+            // Asignar imagen al botón
+            this.btnUpdate.Image = Image.FromFile("C:\\Users\\Andrews\\Downloads\\icons8-actualizar-51.png");
+            this.btnUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+
+            this.btnUpdate.MouseEnter += (s, e) => { this.btnUpdate.BackColor = System.Drawing.Color.FromArgb(0, 105, 217); };
+            this.btnUpdate.MouseLeave += (s, e) => { this.btnUpdate.BackColor = System.Drawing.Color.FromArgb(0, 123, 255); };
+
+            this.btnUpdate.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(0, 86, 179);
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
 
+
+
             // btnDelete
-            this.btnDelete.Location = new System.Drawing.Point(230, 10);
+            this.btnDelete.Location = new System.Drawing.Point(270, 10); // Ajusta la posición si es necesario
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(100, 30);
+            this.btnDelete.Size = new System.Drawing.Size(120, 40); // Usar el mismo tamaño que btnUpdate
             this.btnDelete.TabIndex = 2;
             this.btnDelete.Text = "Eliminar";
-            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.UseVisualStyleBackColor = false;
             this.btnDelete.BackColor = System.Drawing.Color.FromArgb(255, 87, 34); // Naranja
             this.btnDelete.ForeColor = System.Drawing.Color.White;
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelete.FlatAppearance.BorderSize = 0;
-            this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold); // Tamaño de fuente ajustado
+            this.btnDelete.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+
+            // Asignar imagen al botón
+            this.btnDelete.Image = Image.FromFile("C:\\Users\\Andrews\\Downloads\\icons8-eliminar-52.png"); // Cambia la ruta a tu ícono
+            this.btnDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDelete.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+
+            this.btnDelete.MouseEnter += (s, e) => { this.btnDelete.BackColor = System.Drawing.Color.FromArgb(255, 67, 34); }; // Cambia el color al pasar el ratón
+            this.btnDelete.MouseLeave += (s, e) => { this.btnDelete.BackColor = System.Drawing.Color.FromArgb(255, 87, 34); }; // Color original
+
+            this.btnDelete.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(200, 50, 20); // Color al hacer clic
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
 
             // btnShow
-            this.btnShow.Location = new System.Drawing.Point(340, 10);
-            this.btnShow.Name = "btnShow";
-            this.btnShow.Size = new System.Drawing.Size(100, 30);
+            this.btnShow.Location = new System.Drawing.Point(400, 10); // Ajusta la posición
+            this.btnShow.Size = new System.Drawing.Size(120, 40);
             this.btnShow.TabIndex = 3;
             this.btnShow.Text = "Mostrar";
-            this.btnShow.UseVisualStyleBackColor = true;
-            this.btnShow.BackColor = System.Drawing.Color.FromArgb(76, 175, 80); // Verde
+            this.btnShow.UseVisualStyleBackColor = false;
+            this.btnShow.BackColor = System.Drawing.Color.FromArgb(76, 175, 80);
             this.btnShow.ForeColor = System.Drawing.Color.White;
             this.btnShow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnShow.FlatAppearance.BorderSize = 0;
-            this.btnShow.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnShow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnShow.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.btnShow.Image = Image.FromFile("C:\\Users\\Andrews\\Downloads\\icons8-mostrar-propiedad-53.png");
+            this.btnShow.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnShow.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnShow.MouseEnter += (s, e) => { this.btnShow.BackColor = System.Drawing.Color.FromArgb(56, 155, 60); };
+            this.btnShow.MouseLeave += (s, e) => { this.btnShow.BackColor = System.Drawing.Color.FromArgb(76, 175, 80); };
+            this.btnShow.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(50, 120, 45);
             this.btnShow.Click += new System.EventHandler(this.btnShow_Click);
 
-
             // btnExport
-            this.btnExport.Location = new System.Drawing.Point(450, 10);
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(100, 30);
+            this.btnExport.Location = new System.Drawing.Point(530, 10); // Añadir separación
+            this.btnExport.Size = new System.Drawing.Size(120, 40);
             this.btnExport.TabIndex = 4;
             this.btnExport.Text = "Exportar";
-            this.btnExport.UseVisualStyleBackColor = true;
-            this.btnExport.BackColor = System.Drawing.Color.FromArgb(156, 39, 176); // Morado
+            this.btnExport.UseVisualStyleBackColor = false;
+            this.btnExport.BackColor = System.Drawing.Color.FromArgb(156, 39, 176);
             this.btnExport.ForeColor = System.Drawing.Color.White;
             this.btnExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExport.FlatAppearance.BorderSize = 0;
-            this.btnExport.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnExport.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnExport.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.btnExport.Image = Image.FromFile("C:\\Users\\Andrews\\Downloads\\icons8-exportar-54.png");
+            this.btnExport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnExport.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnExport.MouseEnter += (s, e) => { this.btnExport.BackColor = System.Drawing.Color.FromArgb(126, 39, 156); };
+            this.btnExport.MouseLeave += (s, e) => { this.btnExport.BackColor = System.Drawing.Color.FromArgb(156, 39, 176); };
+            this.btnExport.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(100, 20, 130);
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
 
-
             // btnImport
-            this.btnImport.Location = new System.Drawing.Point(560, 10);
-            this.btnImport.Name = "btnImport";
-            this.btnImport.Size = new System.Drawing.Size(100, 30);
+            this.btnImport.Location = new System.Drawing.Point(660, 10); // Añadir separación
+            this.btnImport.Size = new System.Drawing.Size(120, 40);
             this.btnImport.TabIndex = 5;
             this.btnImport.Text = "Importar";
-            this.btnImport.UseVisualStyleBackColor = true;
-            this.btnImport.BackColor = System.Drawing.Color.FromArgb(33, 150, 243); // Azul claro
+            this.btnImport.UseVisualStyleBackColor = false;
+            this.btnImport.BackColor = System.Drawing.Color.FromArgb(33, 150, 243);
             this.btnImport.ForeColor = System.Drawing.Color.White;
             this.btnImport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnImport.FlatAppearance.BorderSize = 0;
             this.btnImport.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnImport.Image = Image.FromFile("C:\\Users\\Andrews\\Downloads\\icons8-importar-55.png");
+            this.btnImport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnImport.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnImport.MouseEnter += (s, e) => { this.btnImport.BackColor = System.Drawing.Color.FromArgb(30, 130, 230); };
+            this.btnImport.MouseLeave += (s, e) => { this.btnImport.BackColor = System.Drawing.Color.FromArgb(33, 150, 243); };
+            this.btnImport.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(20, 100, 200);
             this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
 
+
+
             // btnFilter
-            this.btnFilter.Location = new System.Drawing.Point(670, 10);
+            this.btnFilter.Location = new System.Drawing.Point(790, 10); // Ajustar posición para dar separación
             this.btnFilter.Name = "btnFilter";
-            this.btnFilter.Size = new System.Drawing.Size(60, 30);
+            this.btnFilter.Size = new System.Drawing.Size(100, 40); // Ajustar tamaño para que sea consistente
             this.btnFilter.TabIndex = 6;
             this.btnFilter.Text = "Filtrar";
             this.btnFilter.UseVisualStyleBackColor = true;
@@ -377,7 +446,20 @@ namespace Sistemadegestiondeinventario
             this.btnFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnFilter.FlatAppearance.BorderSize = 0;
             this.btnFilter.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+
+            // Asignar imagen al botón
+            this.btnFilter.Image = Image.FromFile("C:\\Users\\Andrews\\Downloads\\icons8-filtrar-56.png"); // Cambia la ruta a tu ícono
+            this.btnFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnFilter.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+
+            // Efectos de hover
+            this.btnFilter.MouseEnter += (s, e) => { this.btnFilter.BackColor = System.Drawing.Color.FromArgb(255, 160, 7); }; // Color al pasar el ratón
+            this.btnFilter.MouseLeave += (s, e) => { this.btnFilter.BackColor = System.Drawing.Color.FromArgb(255, 193, 7); }; // Color original
+            this.btnFilter.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(200, 150, 0); // Color al hacer clic
+
+            // Asignar evento click
             this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
+
         }
         #endregion
 
